@@ -1,6 +1,6 @@
 import { APILanguage } from '../i18n';
 
-const GW2_API_URL = 'https://api.guildwars2.com';
+const GW2_API_URL = 'https://gw2-api-extended.princeps.workers.dev';
 
 // An error occurred when connecting to the API
 export const API_ERROR_NETWORK = 500;
@@ -17,7 +17,7 @@ const FETCH_OPTIONS: RequestInit = {
 };
 
 // All ids used by the API are numeric, so let's name a type for readability.
-export type Id = number;
+export type Id = number | string;
 
 // A few type guards to check API responses
 function isPlainObject(o: unknown): o is Record<string, unknown> {
@@ -261,7 +261,13 @@ export default class APICache<T extends { id: Id }> {
 
     // See if all requested ids were returned
     for (const id of ids) {
-      let item: T | undefined = returned[id];
+      let item: T | undefined =
+        typeof id === 'number'
+          ? returned[id]
+          : Object.values(returned).find(
+              (o) => o.name?.replace(' ', '').toLowerCase() === id,
+            );
+
       const fixed_item = this.fixItem(id, item);
       // Do not await unless we actually get a Promise.
       // See fixItem for the rationale behind this.

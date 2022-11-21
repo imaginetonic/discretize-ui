@@ -2,6 +2,7 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import React from 'react';
 import { APILanguageProvider } from '../../i18n/';
 import Skill from './Skill';
+import TestSkill from './TestSkill';
 
 export default {
   title: 'Components/Skill',
@@ -24,6 +25,7 @@ export function Multiple() {
   return (
     <div>
       <p>
+        <TestSkill name="banesignet" />
         The meta rotation is <Skill id={5548} /> → <Skill id={5564} /> →{' '}
         <Skill id={1175} />. When <Skill id={1175} /> finishes,{' '}
         <Skill id={5548} /> should be off cooldown, making for a smooth
